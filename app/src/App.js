@@ -11,6 +11,7 @@ function App() {
 
   const todoTextArea = useRef();
   const editTextArea = useRef();
+  const checkboxRef = useRef([]);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem('todoList')) == null) {
@@ -20,14 +21,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log('currentTodos 값 바뀜');
-    console.log(currentTodos);
     setTodoValue(currentTodos);
   }, [currentTodos]);
 
   const setTodos = () => {
-    setTodoList([...todoList, todoTextArea.current.value]);
-    let todo = [...todoList, todoTextArea.current.value];
+    setTodoList([
+      ...todoList,
+      { value: todoTextArea.current.value, state: false },
+    ]);
+    let todo = [
+      ...todoList,
+      { value: todoTextArea.current.value, state: false },
+    ];
     todoTextArea.current.value = '';
     setLocalStorage(todo);
   };
@@ -37,9 +42,8 @@ function App() {
   };
 
   const changeTodos = () => {
-    // let todos = [...JSON.parse(localStorage.getItem('todoList'))];
     let todos = [...todoList];
-    todos[selectedTodos] = editTextArea.current.value;
+    todos[selectedTodos].value = editTextArea.current.value;
     setTodoList(todos);
     setLocalStorage(todos);
     setEditTodos(false);
@@ -121,6 +125,7 @@ function App() {
           setEditTodos={setEditTodos}
           setCurrentTodos={setCurrentTodos}
           setSelectedTodos={setSelectedTodos}
+          checkboxRef={checkboxRef}
         ></TodoBox>
         <footer>
           <button
@@ -146,13 +151,38 @@ function TodoBox(props) {
         <div>
           {props.todoList.map((todo, index) => {
             return (
-              <div key={index}>
-                <input type='checkbox' name='isChecked' value={index}></input>
-                {todo}
+              <div
+                key={index}
+                className={props.todoList[index].state ? 'done' : 'processing'}
+              >
+                <input
+                  className='invisible'
+                  id={index}
+                  type='checkbox'
+                  value={index}
+                  ref={(elem) => (props.checkboxRef.current[index] = elem)}
+                  onClick={() => {
+                    let todo = [...props.todoList];
+                    todo[index].state = props.checkboxRef.current[index].checked
+                      ? true
+                      : false;
+                    props.setTodoList(todo);
+                    localStorage.setItem('todoList', JSON.stringify(todo));
+                  }}
+                ></input>
+                <label
+                  for={index}
+                  className={
+                    props.todoList[index].state
+                      ? 'checkbox checked'
+                      : 'checkbox'
+                  }
+                ></label>
+                {todo.value}
                 <button
                   type='button'
                   onClick={() => {
-                    props.setCurrentTodos(todo);
+                    props.setCurrentTodos(todo.value);
                     props.setEditTodos(true);
                     props.setSelectedTodos(index);
                   }}
