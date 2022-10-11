@@ -13,6 +13,9 @@ function App() {
   const editTextArea = useRef();
   const checkboxRef = useRef([]);
 
+  // 렌더링 최적화 작업 필요
+  // https://velopert.com/3480 참고
+
   useEffect(() => {
     if (JSON.parse(localStorage.getItem('todoList')) == null) {
       return;
@@ -62,23 +65,32 @@ function App() {
   };
 
   return (
-    <div className='App'>
+    <div className='background'>
       {addTodos && (
         <div className='input-todos-modal'>
           <header>
-            <h3>lil todo</h3>
+            <h3 className='input-modal-name'>lil todo</h3>
             <button
               type='button'
+              className='input-modal-x-btn'
               onClick={() => {
                 setAddTodos(false);
               }}
             >
-              X
+              <div></div>
             </button>
           </header>
           <div>
-            <textarea placeholder='new todo' ref={todoTextArea}></textarea>
-            <button type='button' onClick={setTodos}>
+            <textarea
+              placeholder='New todo'
+              ref={todoTextArea}
+              className='input-todos-textarea'
+            ></textarea>
+            <button
+              type='button'
+              className='input-modal-add-btn'
+              onClick={setTodos}
+            >
               Add
             </button>
           </div>
@@ -87,7 +99,7 @@ function App() {
       {editTodos && (
         <div className='input-todos-modal'>
           <header>
-            <h3>lil todo</h3>
+            <h3 className='input-modal-name'>lil todo</h3>
             <button
               type='button'
               onClick={() => {
@@ -98,13 +110,14 @@ function App() {
             </button>
           </header>
           <div>
-            <input
+            <textarea
               ref={editTextArea}
               value={todoValue}
+              className='input-todos-textarea'
               onChange={(e) => {
                 handleChange(e);
               }}
-            ></input>
+            ></textarea>
             <button type='button' onClick={changeTodos}>
               Save
             </button>
@@ -114,9 +127,9 @@ function App() {
           </div>
         </div>
       )}
-      <div className='background'>
+      <div className='container'>
         <header>
-          <h1>Todo</h1>
+          <h1 className='app-name'>Todo</h1>
         </header>
         <TodoBox
           todoList={todoList}
@@ -129,12 +142,13 @@ function App() {
         ></TodoBox>
         <footer>
           <button
+            className='add-btn'
             type='button'
             onClick={() => {
               setAddTodos(true);
             }}
           >
-            Add Todo
+            <h3>Add Todo</h3>
           </button>
         </footer>
       </div>
@@ -144,7 +158,7 @@ function App() {
 
 function TodoBox(props) {
   return (
-    <div>
+    <main className='todos-wrapper'>
       {props.todoList === [] ? (
         <h3>No todos yet</h3>
       ) : (
@@ -171,7 +185,7 @@ function TodoBox(props) {
                   }}
                 ></input>
                 <label
-                  for={index}
+                  htmlFor={index}
                   className={
                     props.todoList[index].state
                       ? 'checkbox checked'
@@ -192,7 +206,7 @@ function TodoBox(props) {
           })}
         </div>
       )}
-    </div>
+    </main>
   );
 }
 
