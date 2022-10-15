@@ -2,17 +2,24 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-div {
+div,
+label,
+textarea {
   box-sizing: border-box;
 }
 
 h1,
-h3 {
+h3,
+span,
+button {
   margin: 0;
+  color: #333;
+  transform: rotate(0.03deg);
 }
 
 .background {
   background-color: #f5f5f5;
+  width: 100vw;
   height: 100vh;
   padding: 1px;
   display: flex;
@@ -28,23 +35,58 @@ h3 {
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
 }
 
 .app-name {
   margin-bottom: 40px;
   font-weight: 700;
+  font-size: 32px;
 }
 
-.todos-wrapper {
+.todos-container {
   margin-bottom: 40px;
+}
+
+.todo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.checkbox {
+  display: inline-block;
+  padding: 7.5px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2.5px solid #ddd;
+  margin-right: 8px;
+}
+
+.todo-text {
+  flex-grow: 1;
+}
+
+.todos-edit-btn {
+  background-color: transparent;
+  border: none;
+  background-image: url('./edit-btn.png');
+  width: 22px;
+  height: 10px;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .input-todos-modal {
   width: 192px;
-  height: 143px;
+  /* height: 163px; */
   background-color: #fff;
-  padding: 10px;
+  padding: 7px;
+  border-radius: 3px;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 30vh;
+  left: 55vw;
+  z-index: 1;
 }
 
 .input-todos-modal header {
@@ -52,6 +94,8 @@ h3 {
   width: 100%;
   height: 30px;
   align-items: center;
+  margin-bottom: 15px;
+  position: relative;
 }
 
 .input-todos-modal header::before {
@@ -59,23 +103,31 @@ h3 {
   content: '';
   width: 10px;
   height: 10px;
-  flex-grow: 1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
+  margin-right: 10px;
+}
+
+.input-todos-modal header::after {
+  display: block;
+  content: '';
+  position: absolute;
+  width: 192px;
+  height: 1px;
+  background-color: #ddd;
+  bottom: -7px;
+  left: -7px;
 }
 
 .input-modal-name {
   font-weight: 400;
   font-size: 12px;
-  flex-grow: 100;
+  flex-grow: 1;
 }
 
 .input-modal-x-btn {
   background-color: transparent;
   border: none;
-  flex-grow: 1;
-  /* display: flex;
-  justify-content: end; */
   padding: 0;
 }
 
@@ -86,8 +138,25 @@ h3 {
   background-repeat: no-repeat;
 }
 
-.input-todos-textarea {
+textarea {
   font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  outline: none;
+  resize: none;
+  padding: 5px;
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+}
+
+textarea:focus {
+  border: 2px solid #18a0fb;
+}
+
+textarea::placeholder {
+  color: #ddd;
+  font-size: 12px;
 }
 
 .input-modal-add-btn {
@@ -95,30 +164,45 @@ h3 {
   color: #fff;
   font-size: 12px;
   border: none;
-  padding: 8px;
+  padding: 7px;
   width: 100%;
   border-radius: 5px;
 }
 
-.done {
-  color: gray;
+.input-modal-save-btn {
+  background-color: #18a0fb;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  padding: 7px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.input-modal-delete-btn {
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  border: 1px solid #333;
+  padding: 7px;
+  width: 100%;
+  border-radius: 5px;
+}
+.done > span {
+  color: #ddd;
 }
 
 .invisible {
   display: none;
 }
 
-.checkbox {
-  display: inline-block;
-  padding: 7.5px;
-  border-radius: 5px;
-  background-color: white;
-  border: 1px solid black;
-  margin-right: 5px;
-}
-
 .checked {
-  background-color: red;
+  width: 20px;
+  height: 20px;
+  background-image: url('./checked.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .add-btn {

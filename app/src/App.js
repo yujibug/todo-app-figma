@@ -16,6 +16,8 @@ function App() {
   // 렌더링 최적화 작업 필요
   // https://velopert.com/3480 참고
 
+  // addTodos, editTodos 창 draggable 기능 추가해야됨
+
   useEffect(() => {
     if (JSON.parse(localStorage.getItem('todoList')) == null) {
       return;
@@ -26,6 +28,20 @@ function App() {
   useEffect(() => {
     setTodoValue(currentTodos);
   }, [currentTodos]);
+
+  useEffect(() => {
+    if (addTodos && editTodos) {
+      setEditTodos(false);
+    }
+    return;
+  }, [addTodos]);
+
+  useEffect(() => {
+    if (editTodos && addTodos) {
+      setAddTodos(false);
+    }
+    return;
+  }, [editTodos]);
 
   const setTodos = () => {
     setTodoList([
@@ -102,6 +118,7 @@ function App() {
             <h3 className='input-modal-name'>lil todo</h3>
             <button
               type='button'
+              className='input-modal-x-btn'
               onClick={() => {
                 setEditTodos(false);
               }}
@@ -118,10 +135,18 @@ function App() {
                 handleChange(e);
               }}
             ></textarea>
-            <button type='button' onClick={changeTodos}>
+            <button
+              type='button'
+              className='input-modal-save-btn'
+              onClick={changeTodos}
+            >
               Save
             </button>
-            <button type='button' onClick={deleteTodos}>
+            <button
+              type='button'
+              className='input-modal-delete-btn'
+              onClick={deleteTodos}
+            >
               Delete
             </button>
           </div>
@@ -158,7 +183,7 @@ function App() {
 
 function TodoBox(props) {
   return (
-    <main className='todos-wrapper'>
+    <main className='todos-container'>
       {props.todoList === [] ? (
         <h3>No todos yet</h3>
       ) : (
@@ -167,7 +192,11 @@ function TodoBox(props) {
             return (
               <div
                 key={index}
-                className={props.todoList[index].state ? 'done' : 'processing'}
+                className={
+                  props.todoList[index].state
+                    ? 'todo-container done'
+                    : 'todo-container processing'
+                }
               >
                 <input
                   className='invisible'
@@ -192,9 +221,10 @@ function TodoBox(props) {
                       : 'checkbox'
                   }
                 ></label>
-                {todo.value}
+                <span className='todo-text'>{todo.value}</span>
                 <button
                   type='button'
+                  className='todos-edit-btn'
                   onClick={() => {
                     props.setCurrentTodos(todo.value);
                     props.setEditTodos(true);
