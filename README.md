@@ -1,5 +1,7 @@
 # todo-app-figma
 
+![image](https://user-images.githubusercontent.com/81607116/196097409-d57336b6-c5d5-4b8e-8568-2418a2e6d87d.png)
+
 **figma community lil todo** 구현
 
 https://www.figma.com/community/widget/1029191187977950214/lil-todo
